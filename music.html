@@ -18,11 +18,11 @@
 			<img src="music1.jpeg">
 		</div>
 		<div id="player">
-			<div id="songTitle">Demo</div>
+			<div id="songTitle"></div>
 			<div id="buttons">
-				<button id="pre"><img src="pre.png" height="90%" width="90%"/></button>
-				<button id="play"><img src="play.png"/></button>
-				<button id="next"><img src="next.png" height="90%" width="90%"/></button>
+				<button id="pre"><img src="pre.png" height="90%" width="90%" onclick="pre()" /></button>
+				<button id="play"><img src="pause.png" onclick="playOrPause()" /></button>
+				<button id="next"><img src="next.png" height="90%" width="90%" onclick="next()" /></button>
 			</div>
 		
 		<div id="seek-bar">
@@ -33,4 +33,65 @@
 	</div>
 
 </body>
+	<script type="text/javascript">
+		
+	var songs = ["Song1.mp3", "Song2.mp3", "Song3.mp3"];
+	var poster = ["music1.jpeg", "music2.jpeg", "music3.jpeg"];
+	var songTitle = document.getElementById("songTitle");
+	var fillBar = document.getElementById("fill");
+
+	var song = new Audio();
+	var currentSong = 0;
+	window.onload = playSong;
+
+	function playSong() {
+		// body...
+		song.src = songs[currentSong];
+
+		songTitle.textContext = songs[currentSong];
+
+		song.play();
+	}
+
+	function playOrPause() {
+		// body...
+		if (song.paused) {
+			song.play();
+			$("#play img").attr("src","pause.png");
+		}
+		else{
+			song.pause();
+			$("#play img").attr("src","play.png");
+		}
+	}
+
+	song.addEventListener('timeupdate',function(){
+
+		var position = song.currentTime / song.duration;
+
+		fillBar.style.width = position * 100 + '%';
+
+	});
+
+	function next(){
+		currentSong++;
+		if (currentSong > 2) {
+			currentSong = 0;
+		}
+		playSong();
+		$('play img').attr("src","pause.png");
+		$("image img").attr("src",poster[currentSong]);
+	}
+
+	function pre(){
+		currentSong--;
+		if (currentSong < 0) {
+			currentSong = 2;
+		}
+		playSong();
+		$('play img').attr("src","pause.png");
+		$("image img").attr("src",poster[currentSong]);
+	}
+
+	</script>
 </html>>
